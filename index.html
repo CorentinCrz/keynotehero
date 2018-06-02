@@ -8,33 +8,53 @@
   <link rel="stylesheet" href="./asset/style.css">
 </head>
 <body>
-  <section class="gameContainer">
-    <div class="scoreContainer">
-      <p class="score">0</p>
-      <div class="multiContainer">
-      <p class="multi">x0</p>
+  <section class="start">
+    <div class="startContainer">
+      <h1>Choix de la difficulté</h1>
+      <button type="button" onclick="renderStartGame(3)">Facile</button>
+      <button type="button" onclick="renderStartGame(4)">Normal</button>
+      <button type="button" onclick="renderStartGame(5)">Difficile</button>
     </div>
-        <p class="mark">0</p>
-    </div>
-    <section class="playerContainer">
-      <div class="stringContainer">
-        <div class="string string1"><span class="note green noteDown"></span></div>
-      </div>
-      <div class="stringContainer">
-        <div class="string string2"><span class="note red noteDown"></span></div>
-      </div>
-      <div class="stringContainer">
-        <div class="string string3"><span class="note yellow noteDown"></span></div>
-      </div>
-      <div class="stringContainer">
-        <div class="string string4"><span class="note blue noteDown"></span></div>
-      </div>
-      <div class="stringContainer">
-        <div class="string string5"><span class="note orange noteDown"></span></div>
-      </div>
-    </section>
   </section>
-  <button type="button" name="button" onclick="btn();">test</button>
+  <main class="game none">
+    <section class="gameContainer">
+      <div class="scoreContainer">
+        <p class="score">0</p>
+        <div class="multiContainer">
+        <p class="multi">x1</p>
+      </div>
+          <p class="mark">0</p>
+      </div>
+      <section class="playerContainer">
+        <span class="endString"></span>
+        <div class="stringContainer">
+          <div class="string string1"><span class="note green noteDown">A</span></div>
+        </div>
+        <div class="stringContainer">
+          <div class="string string2"><span class="note red noteDown">Z</span></div>
+        </div>
+        <div class="stringContainer">
+          <div class="string string3"><span class="note yellow noteDown">E</span></div>
+        </div>
+        <div class="stringContainer">
+          <div class="string string4"><span class="note blue noteDown">R</span></div>
+        </div>
+        <div class="stringContainer">
+          <div class="string string5"><span class="note orange noteDown">T</span></div>
+        </div>
+      </section>
+    </section>
+    <p class="advice">Appuyez sur les touches A, Z, E, R et T, puis validez avec la touche espace au bon moment pour marquer des points !</p>
+  </main>
+  <section class="end none">
+    <div class="endContainer">
+      <p>Score : <span class="score">0</span><br/>
+      Serie de notes : <span class="mark">0</span><br/>
+      Total : <span class="percent">0</span>%</p>
+      <button type="button" onclick="renderStartGame()">Rejouer</button>
+      <button type="button" onclick="changeMode()">Changer la difficulté</button>
+    </div>
+  </section>
   <script type="text/javascript" src="./asset/app.js"></script>
 </body>
 </html>
