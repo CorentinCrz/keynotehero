@@ -11,9 +11,9 @@
   <section class="start">
     <div class="startContainer">
       <h1>Choix de la difficulté</h1>
-      <button type="button" onclick="renderStartGame(3)">Facile</button>
-      <button type="button" onclick="renderStartGame(4)">Normal</button>
-      <button type="button" onclick="renderStartGame(5)">Difficile</button>
+      <button type="button" onclick="ControllerStartGame(3)">Facile</button>
+      <button type="button" onclick="ControllerStartGame(4)">Normal</button>
+      <button type="button" onclick="ControllerStartGame(5)">Difficile</button>
     </div>
   </section>
   <main class="game none">
@@ -51,7 +51,7 @@
       <p>Score : <span class="score">0</span><br/>
       Serie de notes : <span class="mark">0</span><br/>
       Total : <span class="percent">0</span>%</p>
-      <button type="button" onclick="renderStartGame()">Rejouer</button>
+      <button type="button" onclick="ControllerStartGame()">Rejouer</button>
       <button type="button" onclick="changeMode()">Changer la difficulté</button>
     </div>
   </section>

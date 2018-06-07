@@ -1,6 +1,3 @@
-//5 lettres longues
-//multijoueur
-
 var ui = {
   start: document.querySelector('.start'),
   end: document.querySelector('.end'),
@@ -28,27 +25,29 @@ var changeMode = function(){
   ui.start.classList.remove('none');
 }
 var lastMode = 0;
-var renderStartGame = function(mode) {
+var ControllerStartGame = function(mode){
   if (mode === undefined) {
     mode = lastMode;
   } else {
     lastMode = mode;
   }
+  score = 0;
+  mark = 0;
+  perc = 0;
+  bestMark = 0;
+  multi = 1;
+  renderScore();
   randomNotes(mode);
-  ui.start.classList.add('none');
-  ui.end.classList.add('none');
-  ui.game.classList.remove('none');
-  setTimeout(function(){
-    ui.advice.classList.add('none');
-    renderPlayerSong();
-  }, 3000);
+  renderStartGame();
 }
 //song rondomizer
 var notes = [
+  // note exemple
   {
     color: ['green', 'red'],
     time: 1200,
-    isActive: false
+    isActive: false,
+    isOver: false
   }
 ];
 function getRandomInt(max) {
@@ -61,19 +60,34 @@ var color = [
   'blue',
   'orange'
 ]
+var notesNb = 100;
 var randomNotes = function(mode) {
   notes = [];
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < notesNb; i++) {
     notes.push({
       color: [],
       time: 0,
-      isActive: false
+      isActive: false,
+      isOver: false
     });
-    for (var a = 1; a <= 1+getRandomInt(mode); a++) {
-      notes[i].color.push(color[getRandomInt(mode)])
+    for (var a = 0; a <= getRandomInt(mode); a++) {
+      var temp = getRandomInt(mode);
+      if (notes[i].color.indexOf(color[temp]) === -1) {
+        notes[i].color.push(color[temp])
+      }
     }
     notes[i].time = i*1000+getRandomInt(10)*100;
   }
+}
+//render game screen
+var renderStartGame = function() {
+  ui.start.classList.add('none');
+  ui.end.classList.add('none');
+  ui.game.classList.remove('none');
+  setTimeout(function(){
+    ui.advice.classList.add('none');
+    renderPlayerSong();
+  }, 3000);
 }
 //render the complete song depending on notes (array)
 var renderPlayerSong = function() {
@@ -100,7 +114,6 @@ var renderPlayerSong = function() {
       }
       setTimeout(function(){
         let span = document.createElement('span');
-        //mettre listener
         span.classList.add('note');
         span.classList.add(note.color[a]);
         span.classList.add('noteTranslate');
@@ -109,8 +122,11 @@ var renderPlayerSong = function() {
           note.isActive = true
         }, 2700);
         setTimeout(function(){
+          if (note.isOver === false) {
+            console.log('test');
+            wrongColor();
+          }
           note.isActive = false
-          // wrongColor();
           div.removeChild(span);
           if (i === notes.length-1) {
             setTimeout(function(){renderEndScreen();}, 2000);
@@ -125,10 +141,12 @@ var renderEndScreen = function(){
   ui.end.classList.remove('none');
   ui.endScore.textContent = score;
   ui.endMark.textContent = bestMark;
-  ui.endPerc.textContent = perc;
+  ui.endPerc.textContent = perc*100/notesNb;
 }
 
-//event related to listener
+//events related to listener
+// when a key is pressed the color corresponding is added to keyPressed
+//then it is compared to note[i].color
 var keyPressed = [];
 var spacePressedOnce = false;
 var keyPush = function(color){
@@ -178,7 +196,8 @@ window.addEventListener('keydown', function(e){
             return;
           }
         }
-        goodColor();
+        //if the strings (colors) in keyPressed are exactly the same as notes[i].color
+        goodColor(i);
         return;
       }
     }
@@ -207,9 +226,12 @@ window.addEventListener('keyup', function(e){
       break;
   }
 });
-var goodColor = function(){
+var goodColor = function(i){
   mark++;
   perc++;
+  if (bestMark < mark) {
+    bestMark = mark;
+  }
   switch (true) {
     case (mark>=30):
       multi = 4;
@@ -224,13 +246,11 @@ var goodColor = function(){
     default:
       multi = 1;
   }
-  score += multi * 50
+  score += multi * 50;
+  notes[i].isOver = true;
   renderScore('success');
 };
 var wrongColor = function(){
-  if (bestMark < mark) {
-    bestMark = mark;
-  }
   mark = 0;
   multi = 1;
   renderScore('failure');
@@ -239,17 +259,16 @@ var renderScore = function(success){
   ui.score.textContent = score;
   ui.mark.textContent = mark;
   ui.multi.textContent = 'x'+multi;
-  let endStringToggle = function(failure) {
-    document.querySelector('.endString').classList.toggle('endString'+failure);
-  }
+  let endStringClassList = document.querySelector('.endString').classList;
   switch (success) {
     case 'success':
-      endStringToggle('Success');
-      setTimeout(function(){endStringToggle('Success')}, 200);
+      endStringClassList.add('endStringSuccess');
+      setTimeout(function(){endStringClassList.remove('endStringSuccess')}, 200);
       break;
     case 'failure':
-      endStringToggle('Failure');
-      setTimeout(function(){endStringToggle('Failure')}, 200);
+    console.log('tr');
+      endStringClassList.add('endStringFailure')
+      setTimeout(function(){endStringClassList.remove('endStringFailure')}, 200);
       break;
   }
 }
