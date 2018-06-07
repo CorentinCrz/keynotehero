@@ -123,7 +123,6 @@ var renderPlayerSong = function() {
         }, 2700);
         setTimeout(function(){
           if (note.isOver === false) {
-            console.log('test');
             wrongColor();
           }
           note.isActive = false
@@ -266,7 +265,6 @@ var renderScore = function(success){
       setTimeout(function(){endStringClassList.remove('endStringSuccess')}, 200);
       break;
     case 'failure':
-    console.log('tr');
       endStringClassList.add('endStringFailure')
       setTimeout(function(){endStringClassList.remove('endStringFailure')}, 200);
       break;
